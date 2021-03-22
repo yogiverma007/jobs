@@ -61,13 +61,13 @@
 
         <dependency>
             <groupId>com.freedom</groupId>
-            <artifactId>datasource</artifactId>
+            <artifactId>utilities</artifactId>
             <version>${jobs.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.freedom</groupId>
-            <artifactId>utilities</artifactId>
+            <artifactId>datasource</artifactId>
             <version>${jobs.version}</version>
         </dependency>
 

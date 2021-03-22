@@ -5,9 +5,9 @@
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>datasource</module>
 		<module>utilities</module>
 		<module>mainapp</module>
+		<module>datasource</module>
 	</modules>
 
 	<parent>

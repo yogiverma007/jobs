@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration strict="true" packages="com.freedom.jobs">
+
+    <Properties>
+        <Property name="baseDir">/Users/yogeshverma/log/jobs</Property>
+        <Property name="prefix">localhost</Property>
+        <Property name="jsonPattern">{\"requestId\" : \"%X{requestId}\",\"date\" : \"%d{yyyy-MM-dd HH:mm:ss.SSS}\",\"level\" : \"%-5level\",\"logger\" : \"%logger{1}\",\"message\" : \"%msg%n\"}%n</Property>
+    </Properties>
+
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5p %c{1}:%L - %msg%n%n" />
+        </Console>
+
+        <RollingRandomAccessFile name="APP_FILE" fileName="${baseDir}/${prefix}_application.log"
+                                 filePattern="${baseDir}/archive/${prefix}_application_%d{yyyy-MM-dd-HH}-%i.log.gz">
+            <DefaultRolloverStrategy max="2"/>
+            <JSONLayout complete="false" compact="true" eventEol="true" properties="true"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1"/>
+                <SizeBasedTriggeringPolicy size="1 GB" />
+            </Policies>
+        </RollingRandomAccessFile>
+
+        <RollingRandomAccessFile name="DEBUG_FILE" fileName="${baseDir}/${prefix}_debug.log"
+                                 filePattern="${baseDir}/archive/${prefix}_debug_%d{yyyy-MM-dd-HH}-%i.log.gz">
+            <DefaultRolloverStrategy max="2"/>
+            <PatternLayout>
+                <pattern>
+                    %d{yyyy-MM-dd HH:mm:ss.SSS} - %X{seq-no} -%X{request-id} [%t] %-5p %c{1}:%L - %msg%n%n
+                </pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1"/>
+                <SizeBasedTriggeringPolicy size="1 GB" />
+            </Policies>
+        </RollingRandomAccessFile>
+
+    </Appenders>
+
+    <Loggers>
+
+        <logger name="org.springframework" level="info" additivity="false">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="DEBUG_FILE" />
+        </logger>
+
+        <logger name="org.hibernate" level="info" additivity="false">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="DEBUG_FILE" />
+        </logger>
+
+        <Logger name="org.hibernate.SQL" level="DEBUG" additivity="false">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="DEBUG_FILE" />
+        </Logger>
+
+        <logger name="com.zaxxer.hikari" level="DEBUG">
+            <AppenderRef ref="APP_FILE"/>
+        </logger>
+
+        <Logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="trace" additivity="false">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="DEBUG_FILE" />
+        </Logger>
+
+        <Logger name="org.springframework.orm.jpa.vendor.HibernateJpaDialect" level="OFF" additivity="false"/>
+
+        <logger name="com.freedom" level="debug" additivity="false">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="APP_FILE" />
+            <AppenderRef ref="DEBUG_FILE" />
+        </logger>
+
+        <Root level="info">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="APP_FILE" />
+            <AppenderRef ref="DEBUG_FILE" />
+        </Root>
+
+    </Loggers>
+
+</Configuration>
